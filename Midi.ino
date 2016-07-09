@@ -1,11 +1,16 @@
+
+
 int pot1Valor=0;
 int pot2Valor=0;
-int pot3Valor=0;
 
 void setup() {
+pot1Valor=0;
+pot2Valor=0;
+  
   Serial.begin(31250);
   pinMode(A1,INPUT);
   pinMode(A2,INPUT);
+  digitalWrite(52,LOW);
   
 
 }
@@ -26,7 +31,7 @@ txMidi(2,pot2Valor,pot2ValorPrevio);
 void txMidi(int canal,int valorActual,int valorPrevio){
   
   if(valorPrevio!=valorActual){
-    midiSend(0xB,canal,valorActual); //envia codigo midi continuous controller(176)
+    midiSend(0xB0,canal,valorActual); //envia codigo midi continuous controller(176)
     digitalWrite(52,HIGH);
     }
     else{
@@ -35,13 +40,9 @@ void txMidi(int canal,int valorActual,int valorPrevio){
   
   }
   void midiSend(int message,int control,int value){
-  //codigo midi, canal,valor
-  byte m=(byte)message;
-  byte c=(byte)control;
-  byte v=(byte)value;
   
- Serial.write(message);//BYTE
- Serial.write(control);
+ Serial.write(message+control);//BYTE
+ Serial.write(7);// controlador volumen
   Serial.write(value);
   }
 
